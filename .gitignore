@@ -1,0 +1,7 @@
+backend/target/
+uploads/
+backend/uploads/
+.idea/
+*.iml
+.env
+.DS_Store

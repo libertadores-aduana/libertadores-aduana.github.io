@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#0f2c59">
+  <title>Recuperar contraseña</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/institucional.css">
+</head>
+<body class="page-with-inst-header">
+  <div id="gov-bar-container"></div>
+  <div id="inst-header-container" data-compact="true"></div>
+
+  <main class="login-main">
+    <div class="login-card inst-card">
+      <h2 style="color:var(--aduana-azul);font-family:'Roboto Slab',serif;text-align:center;margin-bottom:0.5rem">Recuperar contraseña</h2>
+      <p class="subtitle">Correo institucional registrado en el sistema</p>
+      <form id="formRecuperar">
+        <div class="form-grid">
+          <div class="full">
+            <label for="email">Correo institucional</label>
+            <input type="email" id="email" required autocomplete="email" inputmode="email">
+          </div>
+        </div>
+        <div class="actions">
+          <button type="submit" class="btn btn-primary btn-block">Enviar instrucciones</button>
+        </div>
+      </form>
+      <div id="msg" class="message hidden"></div>
+      <div class="login-links">
+        <a href="index.html">Volver al inicio de sesión</a>
+      </div>
+    </div>
+  </main>
+
+  <div id="inst-footer-container"></div>
+  <script src="js/institucional-layout.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/api.js"></script>
+  <script>
+    document.getElementById("formRecuperar").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const msg = document.getElementById("msg");
+      msg.className = "message hidden";
+      try {
+        const data = await apiRequest("/auth/recuperar", {
+          method: "POST",
+          body: JSON.stringify({ email: document.getElementById("email").value.trim() }),
+        });
+        let text = data.mensaje;
+        if (data.enlaceRecuperacion) {
+          text += "\n\nEnlace (entorno de prueba):\n" + data.enlaceRecuperacion;
+        }
+        msg.textContent = text;
+        msg.className = "message success";
+        msg.style.whiteSpace = "pre-wrap";
+      } catch (err) {
+        msg.textContent = err.message;
+        msg.className = "message error";
+      }
+    });
+  </script>
+</body>
+</html>

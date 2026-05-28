@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#0f2c59">
+  <title>Restablecer contraseña</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/institucional.css">
+</head>
+<body class="page-with-inst-header">
+  <div id="gov-bar-container"></div>
+  <div id="inst-header-container" data-compact="true"></div>
+
+  <main class="login-main">
+    <div class="login-card inst-card">
+      <h2 style="color:var(--aduana-azul);font-family:'Roboto Slab',serif;text-align:center;margin-bottom:0.5rem">Nueva contraseña</h2>
+      <p class="subtitle">Mínimo 8 caracteres · enlace válido 1 hora</p>
+      <form id="formRestablecer">
+        <div class="form-grid">
+          <div class="full">
+            <label for="passwordNueva">Nueva contraseña</label>
+            <input type="password" id="passwordNueva" required minlength="8" autocomplete="new-password">
+          </div>
+          <div class="full">
+            <label for="passwordConfirm">Confirmar</label>
+            <input type="password" id="passwordConfirm" required minlength="8" autocomplete="new-password">
+          </div>
+        </div>
+        <div class="actions">
+          <button type="submit" class="btn btn-primary btn-block">Guardar contraseña</button>
+        </div>
+      </form>
+      <div id="msg" class="message hidden"></div>
+      <div class="login-links">
+        <a href="index.html">Ir al inicio de sesión</a>
+      </div>
+    </div>
+  </main>
+
+  <div id="inst-footer-container"></div>
+  <script src="js/institucional-layout.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/api.js"></script>
+  <script>
+    const token = getQueryParam("token");
+    if (!token) {
+      document.getElementById("msg").textContent = "Enlace inválido. Solicite uno nuevo.";
+      document.getElementById("msg").className = "message error";
+    }
+    document.getElementById("formRestablecer").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const msg = document.getElementById("msg");
+      const p1 = document.getElementById("passwordNueva").value;
+      const p2 = document.getElementById("passwordConfirm").value;
+      if (p1 !== p2) {
+        msg.textContent = "Las contraseñas no coinciden";
+        msg.className = "message error";
+        return;
+      }
+      try {
+        const data = await apiRequest("/auth/restablecer", {
+          method: "POST",
+          body: JSON.stringify({ token, passwordNueva: p1 }),
+        });
+        msg.textContent = data.mensaje;
+        msg.className = "message success";
+        setTimeout(() => { window.location.href = "index.html"; }, 2000);
+      } catch (err) {
+        msg.textContent = err.message;
+        msg.className = "message error";
+      }
+    });
+  </script>
+</body>
+</html>

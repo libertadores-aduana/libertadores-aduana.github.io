@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 56" role="img" aria-label="SAG Chile">
+  <rect width="200" height="56" fill="#fff" stroke="#2d6a4f" stroke-width="2" rx="4"/>
+  <rect x="0" y="0" width="200" height="8" fill="#c41230"/>
+  <rect x="0" y="48" width="200" height="8" fill="#003893"/>
+  <text x="100" y="36" fill="#2d6a4f" font-family="Arial,sans-serif" font-size="18" font-weight="700" text-anchor="middle">SAG</text>
+</svg>

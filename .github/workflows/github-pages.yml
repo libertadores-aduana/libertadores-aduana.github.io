@@ -1,0 +1,41 @@
+# Publica el frontend en https://libertadores-aduana.github.io
+# Requiere: cuenta u organización GitHub llamada "libertadores-aduana"
+# y repositorio "libertadores-aduana.github.io" con Pages activado (GitHub Actions).
+
+name: Publicar sitio GitHub Pages
+
+on:
+  push:
+    branches: [main, master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configurar GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Subir frontend
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: frontend
+
+      - name: Desplegar
+        id: deployment
+        uses: actions/deploy-pages@v4

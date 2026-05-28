@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 56" role="img" aria-label="PDI Chile">
+  <rect width="200" height="56" fill="#1b3d2f" rx="4"/>
+  <circle cx="28" cy="28" r="18" fill="none" stroke="#c9a227" stroke-width="2"/>
+  <text x="115" y="34" fill="#fff" font-family="Arial,sans-serif" font-size="14" font-weight="700" text-anchor="middle">P.D.I.</text>
+</svg>

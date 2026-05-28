@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#0f2c59">
+  <meta name="description" content="Sistema integrado Paso Los Libertadores - Aduana, PDI y SAG Chile">
+  <title>Los Libertadores — Servicio Nacional de Aduanas</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/institucional.css">
+</head>
+<body class="page-with-inst-header">
+  <div id="gov-bar-container"></div>
+  <div id="inst-header-container"></div>
+
+  <main class="login-main" style="flex-direction:column;align-items:stretch">
+    <div class="quick-links" style="padding:0 1rem">
+      <a href="pre-registro.html" class="quick-link-card">
+        <img src="https://www.aduana.cl/aduana/site/artic/20181121/imag/foto_0000000120181121144429/logo.png" alt="" onerror="this.src='assets/logos/aduana.svg'">
+        <strong>Pre-registro viajeros</strong>
+        <span>Suba documentos antes del paso y ahorre tiempo en fila</span>
+      </a>
+      <a href="https://dj.sag.gob.cl/declaracion-jurada" target="_blank" rel="noopener" class="quick-link-card">
+        <img src="https://dj.sag.gob.cl/assets/img/logosfinales_desktop.svg" alt="" onerror="this.src='assets/logos/sag.svg'">
+        <strong>Declaración jurada SAG</strong>
+        <span>Trámite oficial en línea (sag.gob.cl)</span>
+      </a>
+      <a href="ayuda.html" class="quick-link-card">
+        <img src="assets/logos/pdi.svg" alt="">
+        <strong>Ayuda y requisitos</strong>
+        <span>Menores, vehículos SAT y mascotas</span>
+      </a>
+    </div>
+
+    <div class="login-card inst-card" style="margin:0 auto;width:100%">
+      <div class="access-tabs">
+        <span class="access-tab active">Funcionarios</span>
+        <a href="pre-registro.html" class="access-tab">Viajeros / Turistas</a>
+      </div>
+      <h2 style="color:var(--aduana-azul);font-family:'Roboto Slab',serif;font-size:1.15rem;text-align:center;margin-bottom:1rem">
+        Acceso institucional
+      </h2>
+      <p class="subtitle" style="margin-top:0;margin-bottom:1rem">
+        PDI · Aduana · SAG — Solo cuentas habilitadas
+      </p>
+      <form id="loginForm">
+        <div class="form-grid">
+          <div class="full">
+            <label for="email">Correo institucional</label>
+            <input type="email" id="email" name="email" required autocomplete="username" placeholder="funcionario@libertadores.cl" inputmode="email">
+          </div>
+          <div class="full">
+            <label for="password">Contraseña</label>
+            <input type="password" id="password" name="password" required autocomplete="current-password">
+          </div>
+        </div>
+        <div class="actions">
+          <button type="submit" class="btn btn-primary btn-block">Ingresar al sistema</button>
+        </div>
+      </form>
+      <div id="loginMessage" class="message hidden"></div>
+      <div class="login-links">
+        <a href="recuperar.html">¿Olvidó su contraseña?</a>
+        <a href="https://comext.aduana.cl/SNA_SCVM/vista/web/login.do" target="_blank" rel="noopener">Digitación vehículos (aduana.cl)</a>
+      </div>
+    </div>
+  </main>
+
+  <div id="inst-footer-container"></div>
+
+  <script src="js/institucional-layout.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/api.js"></script>
+  <script>
+    document.getElementById("loginForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const msg = document.getElementById("loginMessage");
+      msg.className = "message hidden";
+      try {
+        const data = await apiRequest("/auth/login", {
+          method: "POST",
+          body: JSON.stringify({
+            email: document.getElementById("email").value.trim(),
+            password: document.getElementById("password").value,
+          }),
+        });
+        sessionStorage.setItem("token", data.token);
+        sessionStorage.setItem("rol", data.rol);
+        sessionStorage.setItem("nombre", data.nombre);
+        window.location.href = "panel.html";
+      } catch (err) {
+        msg.textContent = err.message;
+        msg.className = "message error";
+      }
+    });
+    if (getToken()) window.location.href = "panel.html";
+  </script>
+</body>
+</html>
