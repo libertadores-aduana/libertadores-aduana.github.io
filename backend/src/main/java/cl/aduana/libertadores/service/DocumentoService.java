@@ -64,9 +64,13 @@ public class DocumentoService {
     }
 
     public Map<String, Object> crearPreRegistro(String tipoTramite, String email, String referencia) throws SQLException {
+        return crearPreRegistro(tipoTramite, email, referencia, null);
+    }
+
+    public Map<String, Object> crearPreRegistro(String tipoTramite, String email, String referencia, Long usuarioId) throws SQLException {
         String codigo = generarCodigo();
         String refEnc = referencia != null && !referencia.isBlank() ? aes.encrypt(referencia) : null;
-        Long id = preRegistroRepository.insert(codigo, tipoTramite, email, refEnc);
+        Long id = preRegistroRepository.insert(codigo, tipoTramite, email, refEnc, usuarioId);
 
         Map<String, Object> result = new HashMap<>();
         result.put("preRegistroId", id);
@@ -99,6 +103,10 @@ public class DocumentoService {
 
     public List<DocumentoAdjunto> listarPorPasajero(Long pasajeroId) throws SQLException {
         return documentoRepository.listByPasajeroId(pasajeroId);
+    }
+
+    public List<Map<String, Object>> listarPreRegistrosPorUsuario(Long usuarioId) throws SQLException {
+        return preRegistroRepository.findByUsuarioId(usuarioId);
     }
 
     private String generarCodigo() {

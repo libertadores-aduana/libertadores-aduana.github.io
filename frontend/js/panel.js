@@ -1,5 +1,10 @@
 if (!getToken()) {
   window.location.href = "index.html";
+  throw new Error("redirect");
+}
+if (typeof isViajero === "function" && isViajero()) {
+  window.location.href = "perfil.html";
+  throw new Error("redirect");
 }
 
 const rol = getRol();

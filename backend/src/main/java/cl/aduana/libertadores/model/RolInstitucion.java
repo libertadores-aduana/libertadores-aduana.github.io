@@ -4,5 +4,6 @@ public enum RolInstitucion {
     PDI,
     ADUANA,
     SAG,
-    ADMIN
+    ADMIN,
+    VIAJERO
 }

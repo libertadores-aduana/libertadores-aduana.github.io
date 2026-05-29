@@ -1,6 +1,7 @@
 package cl.aduana.libertadores.security;
 
 import cl.aduana.libertadores.model.Empleado;
+import cl.aduana.libertadores.model.UsuarioViajero;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Component;
@@ -34,9 +35,19 @@ public class AuthTokenFilter implements HandlerInterceptor {
     }
 
     public static String crearToken(Empleado empleado) {
-        String token = Base64.getUrlEncoder().encodeToString(
-                (empleado.getId() + ":" + System.currentTimeMillis()).getBytes());
-        TOKENS.put(token, new SessionContext(empleado.getId(), empleado.getRol(), empleado.getNombreCompleto()));
+        String token = generarTokenAleatorio(empleado.getId(), "E");
+        TOKENS.put(token, SessionContext.empleado(empleado));
         return token;
+    }
+
+    public static String crearTokenViajero(UsuarioViajero usuario) {
+        String token = generarTokenAleatorio(usuario.getId(), "V");
+        TOKENS.put(token, SessionContext.viajero(usuario));
+        return token;
+    }
+
+    private static String generarTokenAleatorio(Long id, String prefijo) {
+        return Base64.getUrlEncoder().withoutPadding().encodeToString(
+                (prefijo + id + ":" + System.currentTimeMillis()).getBytes());
     }
 }

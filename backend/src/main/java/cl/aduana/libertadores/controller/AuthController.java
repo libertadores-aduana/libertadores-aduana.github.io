@@ -37,8 +37,8 @@ public class AuthController {
     @PostMapping("/cambiar-password")
     public ResponseEntity<?> cambiarPassword(@RequestBody Map<String, String> body, HttpServletRequest request) {
         SessionContext session = (SessionContext) request.getAttribute(RbacInterceptor.SESSION_ATTR);
-        if (session == null) {
-            return ResponseEntity.status(401).body(Map.of("error", "Debe iniciar sesión"));
+        if (session == null || session.esViajero() || session.getEmpleadoId() == null) {
+            return ResponseEntity.status(401).body(Map.of("error", "Debe iniciar sesión como funcionario"));
         }
         try {
             Map<String, Object> result = authService.cambiarPassword(

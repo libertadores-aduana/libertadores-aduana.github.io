@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Mi perfil — Los Libertadores</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/institucional.css">
+</head>
+<body class="page-with-inst-header">
+  <div id="gov-bar-container"></div>
+  <div id="inst-header-container" data-compact="true"></div>
+
+  <header class="site-header inst-panel-header" style="margin-bottom:0">
+    <div class="header-inner" style="max-width:1200px;margin:0 auto;width:100%;display:flex;align-items:center;justify-content:space-between;gap:0.5rem;padding:0.5rem 1rem">
+      <h1 style="font-size:1rem;margin:0;color:#fff">Mi cuenta — Viajero</h1>
+      <div style="display:flex;align-items:center;gap:0.5rem">
+        <span class="badge" id="userBadge" style="background:rgba(255,255,255,0.2);color:#fff"></span>
+        <button type="button" class="btn btn-secondary" onclick="logout()" style="min-height:40px">Salir</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container" style="max-width:900px;margin:1.5rem auto;padding:0 1rem 2rem">
+    <nav class="perfil-nav" style="display:flex;flex-wrap:wrap;gap:0.5rem;margin-bottom:1.25rem">
+      <button type="button" class="btn btn-primary perfil-tab active" data-tab="inicio">Inicio</button>
+      <button type="button" class="btn btn-secondary perfil-tab" data-tab="perfil">Mi perfil</button>
+      <button type="button" class="btn btn-secondary perfil-tab" data-tab="tramites">Mis trámites</button>
+      <button type="button" class="btn btn-secondary perfil-tab" data-tab="nuevo">Nuevo pre-registro</button>
+    </nav>
+
+    <section id="tab-inicio" class="perfil-section">
+      <div class="card">
+        <h2>Bienvenido/a</h2>
+        <p>Desde su perfil puede gestionar pre-registros, subir documentos y consultar el estado antes de llegar al paso fronterizo.</p>
+        <div class="quick-links" style="margin-top:1rem">
+          <a href="#" class="quick-link-card" data-goto="nuevo">
+            <strong>Nuevo pre-registro</strong>
+            <span>Menores, vehículos, documentos</span>
+          </a>
+          <a href="ayuda.html" class="quick-link-card">
+            <strong>Ayuda y requisitos</strong>
+            <span>PDI, Aduana, SAG</span>
+          </a>
+          <a href="https://dj.sag.gob.cl/declaracion-jurada" target="_blank" rel="noopener" class="quick-link-card">
+            <strong>Declaración SAG</strong>
+            <span>Trámite oficial en línea</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section id="tab-perfil" class="perfil-section hidden">
+      <div class="card">
+        <h2>Datos personales</h2>
+        <form id="formPerfil">
+          <div class="form-grid">
+            <div class="full">
+              <label>Correo</label>
+              <input type="email" id="perfilEmail" disabled>
+            </div>
+            <div class="full">
+              <label for="perfilNombre">Nombre completo</label>
+              <input type="text" id="perfilNombre" required>
+            </div>
+            <div><label for="perfilRut">RUT</label><input type="text" id="perfilRut"></div>
+            <div><label for="perfilTelefono">Teléfono</label><input type="tel" id="perfilTelefono"></div>
+            <div class="full"><label for="perfilNacionalidad">Nacionalidad</label><input type="text" id="perfilNacionalidad"></div>
+          </div>
+          <div class="actions"><button type="submit" class="btn btn-primary">Guardar cambios</button></div>
+        </form>
+        <div id="msgPerfil" class="message hidden"></div>
+        <hr style="margin:1.5rem 0;border:none;border-top:1px solid var(--gris-borde)">
+        <h3>Cambiar contraseña</h3>
+        <form id="formPassword">
+          <div class="form-grid">
+            <div class="full"><label>Contraseña actual</label><input type="password" id="passActual" required></div>
+            <div><label>Nueva contraseña</label><input type="password" id="passNueva" required minlength="8"></div>
+            <div><label>Repetir nueva</label><input type="password" id="passNueva2" required minlength="8"></div>
+          </div>
+          <div class="actions"><button type="submit" class="btn btn-secondary">Actualizar contraseña</button></div>
+        </form>
+        <div id="msgPass" class="message hidden"></div>
+      </div>
+    </section>
+
+    <section id="tab-tramites" class="perfil-section hidden">
+      <div class="card">
+        <h2>Mis pre-registros</h2>
+        <div id="listaTramites"><p>Cargando…</p></div>
+      </div>
+    </section>
+
+    <section id="tab-nuevo" class="perfil-section hidden">
+      <div class="card">
+        <h2>Nuevo pre-registro</h2>
+        <form id="formPreRegistroPerfil">
+          <div class="form-grid">
+            <div class="full">
+              <label for="tipoTramite">Tipo de trámite</label>
+              <select id="tipoTramite" required>
+                <option value="MENOR">Menor de edad</option>
+                <option value="VEHICULO">Vehículo SAT</option>
+                <option value="GENERAL">Documentación general</option>
+              </select>
+            </div>
+            <div class="full">
+              <label for="referencia">Referencia (opcional)</label>
+              <input type="text" id="referencia" placeholder="Ej. viaje familiar 15/06">
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary">Crear pre-registro</button>
+        </form>
+        <div id="msgPrePerfil" class="message hidden"></div>
+        <div id="codigoBoxPerfil" class="codigo-box hidden"></div>
+        <form id="formUploadPerfil" class="hidden" style="margin-top:1rem">
+          <h3>Subir documento</h3>
+          <div class="form-grid">
+            <div class="full">
+              <label>Código de pre-registro</label>
+              <input type="text" id="codigoPreRegistroPerfil" readonly>
+            </div>
+            <div class="full">
+              <label>Tipo de documento</label>
+              <select id="tipoDocumentoPerfil" required>
+                <option value="AUTORIZACION_MENOR">Autorización menor</option>
+                <option value="CEDULA">Cédula / pasaporte</option>
+                <option value="SAT_VEHICULO">Formulario SAT vehículo</option>
+                <option value="OTRO">Otro</option>
+              </select>
+            </div>
+            <div class="full">
+              <label>Archivo PDF o JPG</label>
+              <input type="file" id="archivoPerfil" accept=".pdf,.jpg,.jpeg,.png" required>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-secondary">Subir archivo</button>
+        </form>
+        <div id="msgUploadPerfil" class="message hidden"></div>
+      </div>
+    </section>
+  </main>
+
+  <div id="inst-footer-container"></div>
+  <script src="js/institucional-layout.js?v=5"></script>
+  <script src="js/config.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/auth-common.js"></script>
+  <script src="js/perfil.js"></script>
+</body>
+</html>

@@ -213,6 +213,13 @@ h1, h2, h3, .brand-title {
   margin-bottom: 1.25rem;
 }
 
+.login-card .access-tabs button.access-tab {
+  border: 1px solid var(--gris-borde);
+  background: var(--gris-claro);
+  cursor: pointer;
+  font-family: inherit;
+}
+
 .login-card .access-tab {
   text-align: center;
   padding: 0.6rem;

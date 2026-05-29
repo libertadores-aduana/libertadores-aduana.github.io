@@ -42,6 +42,9 @@ public class AuthService {
         if (!PasswordUtil.verify(password, empleado.getPasswordHash())) {
             return Optional.empty();
         }
+        if (!empleado.isActivo()) {
+            return Optional.empty();
+        }
         String token = AuthTokenFilter.crearToken(empleado);
         Map<String, Object> response = new HashMap<>();
         response.put("token", token);

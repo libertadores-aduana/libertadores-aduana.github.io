@@ -23,6 +23,10 @@ public class InterceptorConfig implements WebMvcConfigurer {
                 "/api/auth/login",
                 "/api/auth/recuperar",
                 "/api/auth/restablecer",
+                "/api/auth/viajero/registro",
+                "/api/auth/viajero/login",
+                "/api/auth/viajero/verificar",
+                "/api/auth/viajero/reenviar-verificacion",
                 "/api/health",
                 "/api/public/**"
         };

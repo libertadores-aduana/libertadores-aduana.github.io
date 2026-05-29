@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Verificar correo — Los Libertadores</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/institucional.css">
+</head>
+<body class="page-with-inst-header">
+  <div id="gov-bar-container"></div>
+  <div id="inst-header-container" data-compact="true"></div>
+
+  <main class="login-main">
+    <div class="login-card inst-card" style="max-width:480px;margin:0 auto;text-align:center">
+      <h2 style="color:var(--aduana-azul);font-family:'Roboto Slab',serif">Verificación de correo</h2>
+      <p id="estadoVerificacion" class="subtitle">Validando su cuenta…</p>
+      <div id="msgVerificar" class="message hidden"></div>
+      <p style="margin-top:1.5rem">
+        <a href="index.html#viajero" class="btn btn-primary">Ir a iniciar sesión</a>
+      </p>
+    </div>
+  </main>
+
+  <div id="inst-footer-container"></div>
+  <script src="js/institucional-layout.js?v=5"></script>
+  <script src="js/config.js"></script>
+  <script src="js/api.js"></script>
+  <script>
+    (async () => {
+      const token = getQueryParam("token");
+      const estado = document.getElementById("estadoVerificacion");
+      const msg = document.getElementById("msgVerificar");
+      if (!token) {
+        estado.textContent = "Enlace no válido";
+        msg.textContent = "Falta el token de verificación.";
+        msg.className = "message error";
+        return;
+      }
+      try {
+        const data = await apiRequest("/auth/viajero/verificar?token=" + encodeURIComponent(token));
+        estado.textContent = "¡Cuenta activada!";
+        msg.textContent = data.mensaje;
+        msg.className = "message success";
+      } catch (err) {
+        estado.textContent = "No se pudo verificar";
+        msg.textContent = err.message;
+        msg.className = "message error";
+      }
+    })();
+  </script>
+</body>
+</html>

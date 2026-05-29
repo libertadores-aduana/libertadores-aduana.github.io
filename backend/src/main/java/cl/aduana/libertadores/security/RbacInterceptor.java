@@ -37,6 +37,12 @@ public class RbacInterceptor implements HandlerInterceptor {
             return false;
         }
 
+        if (session.esViajero()) {
+            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+            response.getWriter().write("{\"error\":\"Acceso reservado a funcionarios\"}");
+            return false;
+        }
+
         Set<RolInstitucion> permitidos = Arrays.stream(annotation.value()).collect(Collectors.toSet());
         if (!permitidos.contains(session.getRol()) && session.getRol() != RolInstitucion.ADMIN) {
             response.setStatus(HttpServletResponse.SC_FORBIDDEN);

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Crear cuenta — Los Libertadores</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/institucional.css">
+</head>
+<body class="page-with-inst-header">
+  <div id="gov-bar-container"></div>
+  <div id="inst-header-container" data-compact="true"></div>
+
+  <main class="login-main">
+    <div class="login-card inst-card" style="max-width:520px;margin:0 auto">
+      <h2 style="color:var(--aduana-azul);font-family:'Roboto Slab',serif;text-align:center">Crear cuenta de viajero</h2>
+      <p class="subtitle" style="text-align:center">Regístrese para pre-registrar trámites y gestionar su perfil</p>
+      <form id="formRegistro">
+        <div class="form-grid">
+          <div class="full">
+            <label for="nombreCompleto">Nombre completo *</label>
+            <input type="text" id="nombreCompleto" required>
+          </div>
+          <div class="full">
+            <label for="email">Correo electrónico *</label>
+            <input type="email" id="email" required autocomplete="email">
+          </div>
+          <div>
+            <label for="rut">RUT / documento</label>
+            <input type="text" id="rut" placeholder="12.345.678-9">
+          </div>
+          <div>
+            <label for="telefono">Teléfono</label>
+            <input type="tel" id="telefono">
+          </div>
+          <div class="full">
+            <label for="nacionalidad">Nacionalidad</label>
+            <input type="text" id="nacionalidad" placeholder="Chilena, Argentina, etc.">
+          </div>
+          <div>
+            <label for="password">Contraseña * (mín. 8)</label>
+            <input type="password" id="password" required minlength="8" autocomplete="new-password">
+          </div>
+          <div>
+            <label for="password2">Repetir contraseña *</label>
+            <input type="password" id="password2" required minlength="8" autocomplete="new-password">
+          </div>
+        </div>
+        <div class="actions">
+          <button type="submit" class="btn btn-primary btn-block">Registrarme</button>
+        </div>
+      </form>
+      <div id="msgRegistro" class="message hidden"></div>
+      <div id="enlaceVerificacion" class="message alert hidden" style="word-break:break-all"></div>
+      <p class="login-links" style="margin-top:1rem;text-align:center">
+        <a href="index.html#viajero">¿Ya tiene cuenta? Iniciar sesión</a>
+      </p>
+    </div>
+  </main>
+
+  <div id="inst-footer-container"></div>
+  <script src="js/institucional-layout.js?v=5"></script>
+  <script src="js/config.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/auth-common.js"></script>
+  <script>
+    document.getElementById("formRegistro").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const msg = document.getElementById("msgRegistro");
+      const enlaceBox = document.getElementById("enlaceVerificacion");
+      msg.className = "message hidden";
+      enlaceBox.className = "message hidden";
+      const p1 = document.getElementById("password").value;
+      const p2 = document.getElementById("password2").value;
+      if (p1 !== p2) {
+        msg.textContent = "Las contraseñas no coinciden";
+        msg.className = "message error";
+        return;
+      }
+      try {
+        const data = await apiRequest("/auth/viajero/registro", {
+          method: "POST",
+          body: JSON.stringify({
+            nombreCompleto: document.getElementById("nombreCompleto").value.trim(),
+            email: document.getElementById("email").value.trim(),
+            rut: document.getElementById("rut").value.trim(),
+            telefono: document.getElementById("telefono").value.trim(),
+            nacionalidad: document.getElementById("nacionalidad").value.trim(),
+            password: p1,
+          }),
+        });
+        msg.textContent = data.mensaje;
+        msg.className = "message success";
+        if (data.enlaceVerificacion) {
+          enlaceBox.innerHTML = "<strong>Verifique su correo con este enlace:</strong><br><a href=\"" +
+            data.enlaceVerificacion + "\">" + data.enlaceVerificacion + "</a>";
+          enlaceBox.className = "message alert";
+        }
+        e.target.reset();
+      } catch (err) {
+        msg.textContent = err.message;
+        msg.className = "message error";
+      }
+    });
+  </script>
+</body>
+</html>

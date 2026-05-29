@@ -15,6 +15,11 @@
 
   <main class="login-main" style="flex-direction:column;align-items:stretch">
     <div class="quick-links" style="padding:0 1rem">
+      <a href="registro.html" class="quick-link-card">
+        <img src="assets/logos/aduana-oficial.png" alt="" onerror="this.src='assets/logos/aduana.svg'">
+        <strong>Crear cuenta viajero</strong>
+        <span>Registro, verificación por correo y perfil personal</span>
+      </a>
       <a href="pre-registro.html" class="quick-link-card">
         <img src="https://www.aduana.cl/aduana/site/artic/20181121/imag/foto_0000000120181121144429/logo.png" alt="" onerror="this.src='assets/logos/aduana.svg'">
         <strong>Pre-registro viajeros</strong>
@@ -33,46 +38,99 @@
       </a>
     </div>
 
-    <div class="login-card inst-card" style="margin:0 auto;width:100%">
-      <div class="access-tabs">
-        <span class="access-tab active">Funcionarios</span>
-        <a href="pre-registro.html" class="access-tab">Viajeros / Turistas</a>
+    <div class="login-card inst-card" style="margin:0 auto;width:100%;max-width:480px">
+      <div class="access-tabs" id="accessTabs">
+        <button type="button" class="access-tab active" data-mode="funcionario">Funcionarios</button>
+        <button type="button" class="access-tab" data-mode="viajero">Viajeros / Turistas</button>
       </div>
-      <h2 style="color:var(--aduana-azul);font-family:'Roboto Slab',serif;font-size:1.15rem;text-align:center;margin-bottom:1rem">
-        Acceso institucional
-      </h2>
-      <p class="subtitle" style="margin-top:0;margin-bottom:1rem">
-        PDI · Aduana · SAG — Solo cuentas habilitadas
-      </p>
-      <form id="loginForm">
-        <div class="form-grid">
-          <div class="full">
-            <label for="email">Correo institucional</label>
-            <input type="email" id="email" name="email" required autocomplete="username" placeholder="funcionario@libertadores.cl" inputmode="email">
+
+      <div id="panelFuncionario">
+        <h2 style="color:var(--aduana-azul);font-family:'Roboto Slab',serif;font-size:1.15rem;text-align:center;margin-bottom:1rem">
+          Acceso institucional
+        </h2>
+        <p class="subtitle" style="margin-top:0;margin-bottom:1rem;text-align:center">
+          PDI · Aduana · SAG
+        </p>
+        <form id="loginForm">
+          <div class="form-grid">
+            <div class="full">
+              <label for="email">Correo institucional</label>
+              <input type="email" id="email" required autocomplete="username" placeholder="funcionario@libertadores.cl">
+            </div>
+            <div class="full">
+              <label for="password">Contraseña</label>
+              <input type="password" id="password" required autocomplete="current-password">
+            </div>
           </div>
-          <div class="full">
-            <label for="password">Contraseña</label>
-            <input type="password" id="password" name="password" required autocomplete="current-password">
+          <div class="actions">
+            <button type="submit" class="btn btn-primary btn-block">Ingresar al panel</button>
           </div>
+        </form>
+        <div id="loginMessage" class="message hidden"></div>
+        <div class="login-links">
+          <a href="recuperar.html">¿Olvidó su contraseña?</a>
         </div>
-        <div class="actions">
-          <button type="submit" class="btn btn-primary btn-block">Ingresar al sistema</button>
+      </div>
+
+      <div id="panelViajero" class="hidden">
+        <h2 style="color:var(--aduana-azul);font-family:'Roboto Slab',serif;font-size:1.15rem;text-align:center;margin-bottom:1rem">
+          Mi cuenta de viajero
+        </h2>
+        <p class="subtitle" style="margin-top:0;margin-bottom:1rem;text-align:center">
+          Cree su cuenta, verifique el correo y gestione sus trámites
+        </p>
+        <form id="loginViajeroForm">
+          <div class="form-grid">
+            <div class="full">
+              <label for="emailViajero">Correo</label>
+              <input type="email" id="emailViajero" required autocomplete="username">
+            </div>
+            <div class="full">
+              <label for="passwordViajero">Contraseña</label>
+              <input type="password" id="passwordViajero" required autocomplete="current-password">
+            </div>
+          </div>
+          <div class="actions">
+            <button type="submit" class="btn btn-primary btn-block">Ingresar a mi perfil</button>
+          </div>
+        </form>
+        <div id="loginViajeroMessage" class="message hidden"></div>
+        <div id="reenviarVerificacion" class="message alert hidden"></div>
+        <div class="login-links" style="flex-direction:column;gap:0.5rem;align-items:center">
+          <a href="registro.html"><strong>Crear cuenta nueva</strong></a>
+          <a href="pre-registro.html">Pre-registro sin cuenta (código de seguimiento)</a>
         </div>
-      </form>
-      <div id="loginMessage" class="message hidden"></div>
-      <div class="login-links">
-        <a href="recuperar.html">¿Olvidó su contraseña?</a>
-        <a href="https://comext.aduana.cl/SNA_SCVM/vista/web/login.do" target="_blank" rel="noopener">Digitación vehículos (aduana.cl)</a>
       </div>
     </div>
   </main>
 
   <div id="inst-footer-container"></div>
 
-  <script src="js/institucional-layout.js?v=4"></script>
+  <script src="js/institucional-layout.js?v=5"></script>
   <script src="js/config.js"></script>
   <script src="js/api.js"></script>
+  <script src="js/auth-common.js"></script>
   <script>
+    function setAccessMode(mode) {
+      const esViajero = mode === "viajero";
+      document.getElementById("panelFuncionario").classList.toggle("hidden", esViajero);
+      document.getElementById("panelViajero").classList.toggle("hidden", !esViajero);
+      document.querySelectorAll("#accessTabs .access-tab").forEach((tab) => {
+        tab.classList.toggle("active", tab.dataset.mode === mode);
+      });
+    }
+
+    document.querySelectorAll("#accessTabs .access-tab").forEach((tab) => {
+      tab.addEventListener("click", () => setAccessMode(tab.dataset.mode));
+    });
+
+    if (location.hash === "#viajero") setAccessMode("viajero");
+
+    if (getToken()) {
+      if (isViajero()) window.location.href = "perfil.html";
+      else window.location.href = "panel.html";
+    }
+
     document.getElementById("loginForm").addEventListener("submit", async (e) => {
       e.preventDefault();
       const msg = document.getElementById("loginMessage");
@@ -85,16 +143,57 @@
             password: document.getElementById("password").value,
           }),
         });
-        sessionStorage.setItem("token", data.token);
-        sessionStorage.setItem("rol", data.rol);
-        sessionStorage.setItem("nombre", data.nombre);
-        window.location.href = "panel.html";
+        saveSession(data);
+        redirectAfterLogin();
       } catch (err) {
         msg.textContent = err.message;
         msg.className = "message error";
       }
     });
-    if (getToken()) window.location.href = "panel.html";
+
+    document.getElementById("loginViajeroForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const msg = document.getElementById("loginViajeroMessage");
+      const reenviar = document.getElementById("reenviarVerificacion");
+      msg.className = "message hidden";
+      reenviar.className = "message hidden";
+      const email = document.getElementById("emailViajero").value.trim();
+      try {
+        const data = await apiRequest("/auth/viajero/login", {
+          method: "POST",
+          body: JSON.stringify({
+            email,
+            password: document.getElementById("passwordViajero").value,
+          }),
+        });
+        if (data.error) throw new Error(data.error);
+        saveSession(data);
+        redirectAfterLogin();
+      } catch (err) {
+        msg.textContent = err.message;
+        msg.className = "message error";
+        if (err.message.includes("verificar")) {
+          reenviar.innerHTML = '¿No recibió el correo? <a href="#" id="linkReenviar">Reenviar verificación</a>';
+          reenviar.className = "message alert";
+          document.getElementById("linkReenviar").onclick = async (ev) => {
+            ev.preventDefault();
+            try {
+              const r = await apiRequest("/auth/viajero/reenviar-verificacion", {
+                method: "POST",
+                body: JSON.stringify({ email }),
+              });
+              let html = r.mensaje;
+              if (r.enlaceVerificacion) {
+                html += '<br><a href="' + r.enlaceVerificacion + '">' + r.enlaceVerificacion + "</a>";
+              }
+              reenviar.innerHTML = html;
+            } catch (e2) {
+              reenviar.textContent = e2.message;
+            }
+          };
+        }
+      }
+    });
   </script>
 </body>
 </html>
