@@ -13,6 +13,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -27,7 +28,7 @@ public class ReporteService {
         this.estadisticasRepository = estadisticasRepository;
     }
 
-    public byte[] generarPdf() throws SQLException {
+    public byte[] generarPdf() throws SQLException, IOException {
         Map<String, Long> stats = estadisticasRepository.resumenGeneral();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
 

@@ -1,6 +1,7 @@
 package cl.aduana.libertadores.controller;
 
 import cl.aduana.libertadores.service.DocumentoService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -40,7 +41,7 @@ public class PublicPreRegistroController {
         try {
             Map<String, Object> result = documentoService.consultarPreRegistro(codigo);
             if (result.containsKey("error")) {
-                return ResponseEntity.notFound().body(result);
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(result);
             }
             return ResponseEntity.ok(result);
         } catch (Exception e) {
