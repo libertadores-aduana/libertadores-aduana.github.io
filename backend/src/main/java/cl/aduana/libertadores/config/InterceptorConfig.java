@@ -28,6 +28,7 @@ public class InterceptorConfig implements WebMvcConfigurer {
                 "/api/auth/viajero/verificar",
                 "/api/auth/viajero/reenviar-verificacion",
                 "/api/health",
+                "/api/health/**",
                 "/api/public/**"
         };
         registry.addInterceptor(authTokenFilter)
