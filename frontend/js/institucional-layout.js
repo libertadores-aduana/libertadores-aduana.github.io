@@ -10,7 +10,7 @@ const LOGOS = {
     href: "https://www.aduana.cl/",
   },
   pdi: {
-    url: "assets/logos/pdi-oficial.svg",
+    url: "assets/logos/pdi-oficial.png",
     fallback: "assets/logos/pdi-oficial.svg",
     alt: "Policía de Investigaciones de Chile",
     href: "https://www.pdi.cl/",
@@ -69,7 +69,7 @@ function renderInstHeader(options = {}) {
   const logos = `
     <div class="inst-logos-row" style="${compact ? "margin-bottom:0;border:none;padding-bottom:0" : ""}">
       ${imgLogo("aduana", "inst-logo-aduana")}
-      ${imgLogo("pdi")}
+      ${imgLogo("pdi", "logo-pdi-wrap")}
       ${imgLogo("sag")}
     </div>`;
 

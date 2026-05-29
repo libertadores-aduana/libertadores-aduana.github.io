@@ -339,9 +339,21 @@ h1, h2, h3, .brand-title {
   opacity: 1;
 }
 
+.inst-logo-link.logo-pdi-wrap img,
 .quick-link-pdi img {
   height: 48px;
-  max-width: 100%;
+  max-width: 200px;
+  object-fit: contain;
+  background: #fff;
+  padding: 4px 8px;
+  border-radius: 4px;
+  box-sizing: content-box;
+}
+
+.logo-pdi {
+  background: #fff;
+  padding: 2px 6px;
+  border-radius: 3px;
 }
 
 .site-header.inst-panel-header h1 {
