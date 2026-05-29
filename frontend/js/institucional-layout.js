@@ -1,17 +1,17 @@
 /**
  * Logos oficiales (hotlink a portales del Estado) con respaldo local si falla la carga.
- * Proyecto académico EFT — enlaces a trámites reales en aduana.cl, sag.gob.cl, pdi.cl
+ * Logos y enlaces institucionales — aduana.cl, sag.gob.cl, pdi.cl
  */
 const LOGOS = {
   aduana: {
-    url: "https://www.aduana.cl/aduana/site/artic/20181121/imag/foto_0000000120181121144429/logo.png",
-    fallback: "assets/logos/aduana.svg",
+    url: "assets/logos/aduana-oficial.png",
+    fallback: "https://www.aduana.cl/aduana/site/artic/20181121/imag/foto_0000000120181121144429/logo.png",
     alt: "Servicio Nacional de Aduanas de Chile",
     href: "https://www.aduana.cl/",
   },
   pdi: {
-    url: "https://www.pdi.cl/assets/img/logo-pdi.svg",
-    fallback: "assets/logos/pdi.svg",
+    url: "assets/logos/pdi-oficial.svg",
+    fallback: "assets/logos/pdi-oficial.svg",
     alt: "Policía de Investigaciones de Chile",
     href: "https://www.pdi.cl/",
   },
@@ -87,17 +87,10 @@ function renderInstHeader(options = {}) {
         <div class="inst-hero-text">
           <p class="brand-title">Paso Fronterizo Los Libertadores</p>
           <p class="brand-slogan">Protegemos las fronteras y facilitamos el comercio exterior</p>
-          <span class="brand-pass">Región de Valparaíso · Complejo fronterizo Chile — Argentina</span>
+          <span class="brand-pass">Complejo fronterizo Chile — Argentina</span>
         </div>
       </div>
     </header>
-    <div class="aviso-academico container" style="margin-top:1rem;padding:0 1rem">
-      <strong>Proyecto académico (EFT Ingeniería de Software).</strong>
-      Interfaz inspirada en los portales oficiales. Para trámites vigentes use
-      <a href="https://www.aduana.cl/" target="_blank" rel="noopener">aduana.cl</a>,
-      <a href="${ENLACES_OFICIALES.declaracionSag}" target="_blank" rel="noopener">Declaración Jurada SAG</a> y
-      <a href="https://www.pdi.cl/" target="_blank" rel="noopener">pdi.cl</a>.
-    </div>
   `;
 }
 
@@ -132,7 +125,7 @@ function renderInstFooter() {
           </div>
         </div>
         <div class="inst-footer-bottom">
-          Sistema Los Libertadores — Examen Final Transversal · RQY1102 · No constituye sitio oficial del Estado.
+          Sistema integrado Los Libertadores — Aduanas de Chile · PDI · SAG
         </div>
       </div>
     </footer>
@@ -146,7 +139,7 @@ function renderPanelHeaderLogos() {
   return `
     <div class="header-logos-mini" aria-hidden="true">
       <img class="logo-aduana-mini" src="${a.url}" alt="" onerror="this.src='${a.fallback}'">
-      <img src="${p.url}" alt="" onerror="this.src='${p.fallback}'">
+      <img class="logo-pdi-mini" src="${p.url}" alt="" onerror="this.src='${p.fallback}'">
       <img src="${s.url}" alt="" onerror="this.src='${s.fallback}'">
     </div>
   `;

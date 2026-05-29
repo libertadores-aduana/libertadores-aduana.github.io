@@ -52,6 +52,12 @@ h1, h2, h3, .brand-title {
   align-items: center;
   gap: 0.5rem;
   font-weight: 500;
+  flex-wrap: wrap;
+}
+
+.gov-bar-sep {
+  opacity: 0.6;
+  user-select: none;
 }
 
 .gov-bar-flag {
@@ -324,6 +330,18 @@ h1, h2, h3, .brand-title {
   filter: none;
   height: 32px;
   max-width: 90px;
+}
+
+.site-header.inst-panel-header .header-logos-mini .logo-pdi-mini {
+  filter: none;
+  height: 30px;
+  max-width: 100px;
+  opacity: 1;
+}
+
+.quick-link-pdi img {
+  height: 48px;
+  max-width: 100%;
 }
 
 .site-header.inst-panel-header h1 {
