@@ -2,6 +2,7 @@ package cl.aduana.libertadores.service;
 
 import cl.aduana.libertadores.repository.EstadisticasRepository;
 import com.itextpdf.io.font.constants.StandardFonts;
+import com.itextpdf.kernel.colors.Color;
 import com.itextpdf.kernel.colors.DeviceRgb;
 import com.itextpdf.kernel.font.PdfFont;
 import com.itextpdf.kernel.font.PdfFontFactory;
@@ -144,7 +145,7 @@ public class ReporteService {
         doc.add(cuerpoEncabezado);
     }
 
-    private Cell celdaFranja(DeviceRgb color) {
+    private Cell celdaFranja(Color color) {
         return new Cell()
                 .setBackgroundColor(color)
                 .setBorder(Border.NO_BORDER)
@@ -214,7 +215,7 @@ public class ReporteService {
         boolean alterno = false;
         for (Map.Entry<String, String> entry : etiquetas.entrySet()) {
             Long valor = stats.getOrDefault(entry.getKey(), 0L);
-            DeviceRgb fondo = alterno ? GRIS_FONDO : DeviceRgb.WHITE;
+            Color fondo = alterno ? GRIS_FONDO : DeviceRgb.WHITE;
             table.addCell(celdaDato(entry.getValue(), fontRegular, fondo, TextAlignment.LEFT));
             table.addCell(celdaDato(String.format("%,d", valor), fontBold, fondo, TextAlignment.RIGHT));
             alterno = !alterno;
@@ -243,7 +244,7 @@ public class ReporteService {
                 .setBorder(new SolidBorder(ADUANA_AZUL, 0.5f));
     }
 
-    private Cell celdaDato(String texto, PdfFont font, DeviceRgb fondo, TextAlignment align) {
+    private Cell celdaDato(String texto, PdfFont font, Color fondo, TextAlignment align) {
         return new Cell()
                 .add(new Paragraph(texto).setFont(font).setFontSize(9).setFontColor(ADUANA_AZUL).setMargin(0))
                 .setBackgroundColor(fondo)
