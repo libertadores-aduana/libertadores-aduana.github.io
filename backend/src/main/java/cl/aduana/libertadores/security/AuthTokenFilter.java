@@ -20,15 +20,26 @@ public class AuthTokenFilter implements HandlerInterceptor {
 
     public static final Map<String, SessionContext> TOKENS = new ConcurrentHashMap<>();
 
+    private final TokenSessionResolver tokenSessionResolver;
+
+    public AuthTokenFilter(TokenSessionResolver tokenSessionResolver) {
+        this.tokenSessionResolver = tokenSessionResolver;
+    }
+
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String auth = request.getHeader("Authorization");
         if (auth != null && auth.startsWith("Bearer ")) {
             String token = auth.substring(7);
             SessionContext ctx = TOKENS.get(token);
+            if (ctx == null) {
+                ctx = tokenSessionResolver.resolve(token).orElse(null);
+                if (ctx != null) {
+                    TOKENS.put(token, ctx);
+                }
+            }
             if (ctx != null) {
                 request.setAttribute(RbacInterceptor.SESSION_ATTR, ctx);
-                return true;
             }
         }
         return true;

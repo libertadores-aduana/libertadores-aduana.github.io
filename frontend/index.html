@@ -134,7 +134,9 @@
     document.getElementById("loginForm").addEventListener("submit", async (e) => {
       e.preventDefault();
       const msg = document.getElementById("loginMessage");
+      const btn = e.target.querySelector('button[type="submit"]');
       msg.className = "message hidden";
+      setButtonLoading(btn, true, "Conectando con el servidor…");
       try {
         const data = await apiRequest("/auth/login", {
           method: "POST",
@@ -148,6 +150,8 @@
       } catch (err) {
         msg.textContent = err.message;
         msg.className = "message error";
+      } finally {
+        setButtonLoading(btn, false);
       }
     });
 
@@ -155,9 +159,11 @@
       e.preventDefault();
       const msg = document.getElementById("loginViajeroMessage");
       const reenviar = document.getElementById("reenviarVerificacion");
+      const btn = e.target.querySelector('button[type="submit"]');
       msg.className = "message hidden";
       reenviar.className = "message hidden";
       const email = document.getElementById("emailViajero").value.trim();
+      setButtonLoading(btn, true, "Conectando con el servidor…");
       try {
         const data = await apiRequest("/auth/viajero/login", {
           method: "POST",
@@ -192,6 +198,8 @@
             }
           };
         }
+      } finally {
+        setButtonLoading(btn, false);
       }
     });
   </script>

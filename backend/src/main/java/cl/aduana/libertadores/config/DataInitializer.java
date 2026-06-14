@@ -24,9 +24,9 @@ public class DataInitializer implements CommandLineRunner {
             if (count != null && count > 0) {
                 return;
             }
-            insert("11.111.111-1", "Funcionario PDI", "pdi@libertadores.cl", "Pdi123!", "PDI");
+            insert("11.111.111-1", "Funcionario PDI", "pdi@libertadores.cl", "Pdi12345!", "PDI");
             insert("22.222.222-2", "Funcionario Aduana", "aduana@libertadores.cl", "Aduana123!", "ADUANA");
-            insert("33.333.333-3", "Funcionario SAG", "sag@libertadores.cl", "Sag123!", "SAG");
+            insert("33.333.333-3", "Funcionario SAG", "sag@libertadores.cl", "Sag12345!", "SAG");
             insert("99.999.999-9", "Administrador", "admin@libertadores.cl", "Admin123!", "ADMIN");
         } catch (Exception ignored) {
             // Tablas aún no creadas: ejecutar database/schema.sql primero

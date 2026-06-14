@@ -504,6 +504,94 @@ textarea:focus {
   word-break: break-all;
 }
 
+/* Reportes — resumen institucional */
+.report-resumen {
+  margin-top: 1.25rem;
+}
+
+.report-resumen-meta {
+  font-size: 0.85rem;
+  color: #666;
+  margin-bottom: 1rem;
+}
+
+.report-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+
+@media (min-width: 768px) {
+  .report-stats-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.report-stat-card {
+  background: linear-gradient(135deg, #f0f4fa 0%, #fff 100%);
+  border: 1px solid var(--gris-borde);
+  border-left: 4px solid var(--aduana-azul);
+  border-radius: 8px;
+  padding: 1rem;
+}
+
+.report-stat-card.alert-stat {
+  border-left-color: var(--gov-rojo, #c41230);
+}
+
+.report-stat-card .stat-value {
+  font-family: "Roboto Slab", serif;
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--aduana-azul);
+  line-height: 1.2;
+}
+
+.report-stat-card.alert-stat .stat-value {
+  color: var(--gov-rojo, #c41230);
+}
+
+.report-stat-card .stat-label {
+  font-size: 0.78rem;
+  color: #555;
+  margin-top: 0.35rem;
+  line-height: 1.3;
+}
+
+.report-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.report-table th {
+  background: var(--aduana-azul);
+  color: #fff;
+  text-align: left;
+  padding: 0.65rem 0.85rem;
+  font-weight: 600;
+}
+
+.report-table th:last-child {
+  text-align: right;
+}
+
+.report-table td {
+  padding: 0.6rem 0.85rem;
+  border-bottom: 1px solid var(--gris-borde);
+  color: var(--azul-marino, #0f2c59);
+}
+
+.report-table td:last-child {
+  text-align: right;
+  font-weight: 600;
+}
+
+.report-table tbody tr:nth-child(even) {
+  background: var(--gris-claro);
+}
+
 pre.json-preview {
   margin-top: 1rem;
   background: var(--gris-claro);

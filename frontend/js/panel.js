@@ -264,16 +264,87 @@ document.getElementById("formDeclaracion")?.addEventListener("submit", async (e)
 });
 
 /* Reportes */
+const INDICADORES_REPORTE = [
+  { key: "totalPasajeros", label: "Pasajeros registrados (PDI)", destacado: true },
+  { key: "totalMenores", label: "Pasajeros menores de edad", destacado: true },
+  { key: "permisosMenorValidados", label: "Permisos de menores validados", destacado: true },
+  { key: "totalVehiculosSat", label: "Vehículos registrados (SAT)", destacado: true },
+  { key: "alertasRobo", label: "Alertas por encargo de robo", alerta: true, destacado: true },
+  { key: "declaracionesSag", label: "Declaraciones juradas SAG", destacado: true },
+];
+
+function formatNumero(n) {
+  return Number(n || 0).toLocaleString("es-CL");
+}
+
+function renderResumen(data) {
+  const box = document.getElementById("resumenBox");
+  const errorEl = document.getElementById("resumenError");
+  const statsGrid = document.getElementById("resumenStats");
+  const tableBody = document.getElementById("resumenTableBody");
+  const fechaEl = document.getElementById("resumenFecha");
+  const hintEl = document.getElementById("resumenEmptyHint");
+
+  errorEl.classList.add("hidden");
+  box.classList.remove("hidden");
+
+  const ahora = new Date();
+  fechaEl.textContent =
+    "Resumen operacional · " +
+    ahora.toLocaleDateString("es-CL", { day: "numeric", month: "long", year: "numeric" }) +
+    ", " +
+    ahora.toLocaleTimeString("es-CL", { hour: "2-digit", minute: "2-digit" }) +
+    " hrs · Paso Los Libertadores";
+
+  statsGrid.innerHTML = "";
+  tableBody.innerHTML = "";
+
+  let totalCero = true;
+  INDICADORES_REPORTE.forEach((ind) => {
+    const valor = data[ind.key] ?? 0;
+    if (valor > 0) totalCero = false;
+
+    if (ind.destacado) {
+      const card = document.createElement("div");
+      card.className = "report-stat-card" + (ind.alerta ? " alert-stat" : "");
+      card.innerHTML =
+        '<div class="stat-value">' + formatNumero(valor) + "</div>" +
+        '<div class="stat-label">' + ind.label + "</div>";
+      statsGrid.appendChild(card);
+    }
+
+    const tr = document.createElement("tr");
+    tr.innerHTML =
+      "<td>" + ind.label + "</td><td>" + formatNumero(valor) + "</td>";
+    tableBody.appendChild(tr);
+  });
+
+  if (totalCero) {
+    hintEl.textContent =
+      "Todos los indicadores están en cero. Ejecute database/seed_demo_neon_quick.sql en Neon " +
+      "o registre trámites desde el panel para poblar los reportes.";
+    hintEl.classList.remove("hidden");
+  } else {
+    hintEl.classList.add("hidden");
+  }
+}
+
 document.getElementById("btnResumen").addEventListener("click", async () => {
-  const pre = document.getElementById("resumenJson");
+  const btn = document.getElementById("btnResumen");
+  const errorEl = document.getElementById("resumenError");
+  setButtonLoading(btn, true, "Cargando…");
+  errorEl.classList.add("hidden");
   try {
     const data = await apiRequest("/reportes/resumen");
-    pre.textContent = JSON.stringify(data, null, 2);
-    pre.classList.remove("hidden");
+    renderResumen(data);
     showSection("reportes");
   } catch (err) {
-    pre.textContent = err.message;
-    pre.classList.remove("hidden");
+    document.getElementById("resumenBox").classList.add("hidden");
+    errorEl.textContent = err.message;
+    errorEl.classList.remove("hidden");
+    showSection("reportes");
+  } finally {
+    setButtonLoading(btn, false);
   }
 });
 

@@ -53,9 +53,9 @@ AES_SECRET_KEY=<base64 de 32 bytes>
 
 | Email | Contraseña | Rol |
 |-------|------------|-----|
-| pdi@libertadores.cl | Pdi123! | PDI |
+| pdi@libertadores.cl | Pdi12345! | PDI |
 | aduana@libertadores.cl | Aduana123! | ADUANA |
-| sag@libertadores.cl | Sag123! | SAG |
+| sag@libertadores.cl | Sag12345! | SAG |
 | admin@libertadores.cl | Admin123! | ADMIN |
 
 ### 3. Frontend

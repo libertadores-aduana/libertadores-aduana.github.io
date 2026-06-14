@@ -77,6 +77,8 @@
         msg.className = "message error";
         return;
       }
+      const btn = e.target.querySelector('button[type="submit"]');
+      setButtonLoading(btn, true, "Registrando…");
       try {
         const data = await apiRequest("/auth/viajero/registro", {
           method: "POST",
@@ -100,6 +102,8 @@
       } catch (err) {
         msg.textContent = err.message;
         msg.className = "message error";
+      } finally {
+        setButtonLoading(btn, false);
       }
     });
   </script>

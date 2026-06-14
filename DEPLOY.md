@@ -46,12 +46,20 @@ git push -u origin main
 
 | Variable | Valor |
 |----------|--------|
-| `DATABASE_URL` | JDBC de Neon (ver abajo) |
-| `DB_USER` | usuario Neon |
-| `DB_PASSWORD` | contraseña Neon |
+| `DATABASE_URL` | Connection string **completa** de Neon (`postgresql://usuario:contraseña@host/neondb?sslmode=require`) |
 | `AES_SECRET_KEY` | `openssl rand -base64 32` o generador online |
 | `CORS_ORIGINS` | `https://libertadores-aduana.github.io,http://localhost:5500` |
-| `FRONTEND_URL` | `https://libertadores-aduana.github.io` |
+| `FRONTEND_URL` | `https://libertadores-aduana.github.io/frontend` |
+
+**Importante:** si usa `DATABASE_URL` con usuario y contraseña incluidos, **no** defina `DB_USER` ni `DB_PASSWORD` en Render (pueden quedar desactualizados y confundir).
+
+### Verificar que la BD funciona
+
+Abra en el navegador:
+
+`https://libertadores-api.onrender.com/api/health/db`
+
+Debe responder `{"ok":true,"database":"UP"}`. Si dice `password authentication failed`, copie de nuevo la connection string desde Neon → **Dashboard → Connect** y péguela en `DATABASE_URL` (si cambió la contraseña, use **Reset password** en Neon primero).
 
 5. Copia la URL del servicio, por ejemplo: `https://libertadores-api.onrender.com`
 
@@ -97,7 +105,7 @@ Abre `http://localhost:5500` (usa `localhost:8080` como API automáticamente).
 - [ ] Sitio abre: https://libertadores-aduana.github.io
 - [ ] `config.js` tiene la URL real de Render (sin `REEMPLAZA`)
 - [ ] `CORS_ORIGINS` en Render incluye `https://libertadores-aduana.github.io`
-- [ ] Login con `pdi@libertadores.cl` / `Pdi123!` (usuarios demo del README)
+- [ ] Login con `pdi@libertadores.cl` / `Pdi12345!` (usuarios demo del README)
 - [ ] Aviso académico visible en el pie de página
 
 ---
