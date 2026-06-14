@@ -61,12 +61,38 @@ h1, h2, h3, .brand-title {
 }
 
 .gov-bar-flag {
-  width: 22px;
+  width: 21px;
   height: 14px;
-  border-radius: 1px;
-  background: linear-gradient(180deg, #fff 33.33%, #d52b1e 33.33%, #d52b1e 66.66%, #003893 66.66%);
+  position: relative;
+  background: linear-gradient(180deg, #fff 50%, #d52b1e 50%);
   box-shadow: 0 0 0 1px rgba(255,255,255,0.3);
   flex-shrink: 0;
+  overflow: hidden;
+  border-radius: 1px;
+}
+
+.gov-bar-flag::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 7px;
+  height: 7px;
+  background-color: #003893;
+}
+
+.gov-bar-flag::after {
+  content: "\2605"; /* Estrella blanca ★ */
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 7px;
+  height: 7px;
+  color: #fff;
+  font-size: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .gov-bar-links {
